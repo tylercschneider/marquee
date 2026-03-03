@@ -1,5 +1,7 @@
 module Marquee
   class Page < ApplicationRecord
+    include Marquee::Versionable
+
     STATUSES = %w[draft published archived].freeze
     PAGE_TYPES = %w[homepage landing feature pricing about legal custom].freeze
 
