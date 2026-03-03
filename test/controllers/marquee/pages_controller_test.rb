@@ -13,5 +13,12 @@ module Marquee
       assert_response :success
       assert_match "Welcome", response.body
     end
+
+    test "GET /:slug returns 404 for draft page" do
+      Marquee::Page.create!(title: "Draft", slug: "draft-page")
+
+      get "/marquee/draft-page"
+      assert_response :not_found
+    end
   end
 end
