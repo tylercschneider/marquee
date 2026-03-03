@@ -28,6 +28,9 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+  # Schema is loaded directly in test_helper; skip pending migration check.
+  config.active_record.maintain_test_schema = false
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
