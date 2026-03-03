@@ -20,5 +20,11 @@ module Marquee
       assert_not page.valid?
       assert_includes page.errors[:slug], "only allows lowercase letters, numbers, and hyphens"
     end
+
+    test "rejects invalid status" do
+      page = Marquee::Page.new(title: "Test", slug: "test", status: "bogus")
+      assert_not page.valid?
+      assert_includes page.errors[:status], "is not included in the list"
+    end
   end
 end
