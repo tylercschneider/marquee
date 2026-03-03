@@ -19,5 +19,14 @@ module Marquee
       assert_equal "created", version.action
       assert version.snapshot.key?("title")
     end
+
+    test "auto-creates version on page update with changeset" do
+      page = Marquee::Page.create!(title: "Original", slug: "ver-update")
+      page.update!(title: "Updated")
+      versions = page.versions.order(:created_at)
+      assert_equal 2, versions.count
+      assert_equal "updated", versions.last.action
+      assert_equal({ "title" => [ "Original", "Updated" ] }, versions.last.changeset)
+    end
   end
 end
