@@ -12,4 +12,5 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = false
 end
 
+task test: "app:db:test:prepare"
 task default: :test

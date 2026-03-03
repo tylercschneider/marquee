@@ -12,6 +12,6 @@ class CreateMarqueeSections < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :marquee_sections, [:page_id, :position]
+    add_index :marquee_sections, [ :page_id, :position ]
   end
 end
