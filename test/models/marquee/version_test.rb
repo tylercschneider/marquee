@@ -28,5 +28,11 @@ module Marquee
       assert_equal "updated", versions.last.action
       assert_equal({ "title" => [ "Original", "Updated" ] }, versions.last.changeset)
     end
+
+    test "records published action when page is published" do
+      page = Marquee::Page.create!(title: "Pub", slug: "ver-pub")
+      page.publish!
+      assert_equal "published", page.versions.order(:created_at).last.action
+    end
   end
 end
