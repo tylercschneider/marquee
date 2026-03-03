@@ -47,5 +47,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_000002) do
     t.index ["page_id"], name: "index_marquee_sections_on_page_id"
   end
 
+  create_table "marquee_versions", force: :cascade do |t|
+    t.string "versionable_type", null: false
+    t.bigint "versionable_id", null: false
+    t.bigint "user_id"
+    t.string "action", null: false
+    t.json "changeset", default: {}
+    t.json "snapshot", default: {}
+    t.json "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["versionable_type", "versionable_id"], name: "idx_marquee_versions_on_versionable"
+    t.index ["user_id"], name: "index_marquee_versions_on_user_id"
+  end
+
   add_foreign_key "marquee_sections", "marquee_pages", column: "page_id"
 end
