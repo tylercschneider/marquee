@@ -14,5 +14,11 @@ module Marquee
       assert_not page.valid?
       assert_includes page.errors[:slug], "has already been taken"
     end
+
+    test "rejects slugs with invalid characters" do
+      page = Marquee::Page.new(title: "Test", slug: "no spaces!")
+      assert_not page.valid?
+      assert_includes page.errors[:slug], "only allows lowercase letters, numbers, and hyphens"
+    end
   end
 end
