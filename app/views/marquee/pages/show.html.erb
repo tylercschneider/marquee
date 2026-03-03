@@ -1,0 +1,15 @@
+<% content_for :head do %>
+  <title><%= @page.meta_title.presence || @page.title %></title>
+  <% if @page.meta_description.present? %>
+    <meta name="description" content="<%= @page.meta_description %>">
+    <meta property="og:description" content="<%= @page.meta_description %>">
+  <% end %>
+  <meta property="og:title" content="<%= @page.meta_title.presence || @page.title %>">
+  <meta property="og:type" content="website">
+<% end %>
+
+<article class="marquee-page marquee-page--<%= @page.page_type %>">
+  <% @sections.each do |section| %>
+    <%= render partial: "marquee/sections/#{section.section_type}", locals: { section: section } %>
+  <% end %>
+</article>
