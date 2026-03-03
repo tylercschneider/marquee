@@ -1,0 +1,11 @@
+<section class="marquee-section marquee-section--hero">
+  <% if section.content["headline"] %>
+    <h1><%= section.content["headline"] %></h1>
+  <% end %>
+  <% if section.content["subheadline"] %>
+    <p><%= section.content["subheadline"] %></p>
+  <% end %>
+  <% if section.content["cta_text"] %>
+    <a href="<%= section.content["cta_url"] %>" class="marquee-cta"><%= section.content["cta_text"] %></a>
+  <% end %>
+</section>

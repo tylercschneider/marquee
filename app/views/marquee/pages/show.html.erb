@@ -1,0 +1,5 @@
+<article class="marquee-page marquee-page--<%= @page.page_type %>">
+  <% @sections.each do |section| %>
+    <%= render partial: "marquee/sections/#{section.section_type}", locals: { section: section } %>
+  <% end %>
+</article>
