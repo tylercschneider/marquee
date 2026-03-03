@@ -14,5 +14,13 @@ module Marquee
       assert_not section.valid?
       assert_includes section.errors[:section_type], "is not included in the list"
     end
+
+    test "page returns sections ordered by position" do
+      page = Marquee::Page.create!(title: "Test", slug: "sec-order")
+      second = Marquee::Section.create!(page: page, section_type: "cta", position: 2)
+      first = Marquee::Section.create!(page: page, section_type: "hero", position: 1)
+
+      assert_equal [first, second], page.sections.to_a
+    end
   end
 end
