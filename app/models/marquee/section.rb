@@ -6,6 +6,8 @@ module Marquee
 
     belongs_to :page
 
+    scope :visible, -> { where(visible: true) }
+
     validates :section_type, inclusion: { in: SECTION_TYPES }
   end
 end

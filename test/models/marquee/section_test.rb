@@ -22,5 +22,13 @@ module Marquee
 
       assert_equal [first, second], page.sections.to_a
     end
+
+    test "visible scope excludes hidden sections" do
+      page = Marquee::Page.create!(title: "Test", slug: "sec-vis")
+      shown = Marquee::Section.create!(page: page, section_type: "hero", position: 0)
+      Marquee::Section.create!(page: page, section_type: "cta", position: 1, visible: false)
+
+      assert_equal [shown], Marquee::Section.visible.to_a
+    end
   end
 end
