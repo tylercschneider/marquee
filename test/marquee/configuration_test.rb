@@ -14,4 +14,13 @@ class Marquee::ConfigurationTest < ActiveSupport::TestCase
   ensure
     Marquee.instance_variable_set(:@configuration, nil)
   end
+
+  test "has sensible defaults for all options" do
+    config = Marquee::Configuration.new
+    assert_equal "/", config.public_path
+    assert_equal "/admin/site", config.admin_path
+    assert_nil config.admin_auth
+    assert_nil config.current_user_method
+    assert_equal true, config.enable_tracking
+  end
 end
