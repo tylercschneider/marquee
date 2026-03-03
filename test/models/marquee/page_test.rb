@@ -41,5 +41,15 @@ module Marquee
       assert_equal "published", page.status
       assert_not_nil page.published_at
     end
+
+    test "published scope returns only published pages" do
+      draft = Marquee::Page.create!(title: "Draft", slug: "draft-page")
+      published = Marquee::Page.create!(title: "Published", slug: "published-page")
+      published.publish!
+
+      results = Marquee::Page.published
+      assert_includes results, published
+      assert_not_includes results, draft
+    end
   end
 end

@@ -3,6 +3,8 @@ module Marquee
     STATUSES = %w[draft published archived].freeze
     PAGE_TYPES = %w[homepage landing feature pricing about legal custom].freeze
 
+    scope :published, -> { where(status: "published") }
+
     validates :title, presence: true
     validates :status, inclusion: { in: STATUSES }
     validates :page_type, inclusion: { in: PAGE_TYPES }
