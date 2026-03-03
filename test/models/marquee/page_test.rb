@@ -32,5 +32,14 @@ module Marquee
       assert_not page.valid?
       assert_includes page.errors[:page_type], "is not included in the list"
     end
+
+    test "publish! sets status to published and published_at" do
+      page = Marquee::Page.create!(title: "Test", slug: "pub-test")
+      assert_equal "draft", page.status
+
+      page.publish!
+      assert_equal "published", page.status
+      assert_not_nil page.published_at
+    end
   end
 end

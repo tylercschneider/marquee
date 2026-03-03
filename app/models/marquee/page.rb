@@ -9,5 +9,9 @@ module Marquee
     validates :slug, uniqueness: true,
                      format: { with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/,
                                message: "only allows lowercase letters, numbers, and hyphens" }
+
+    def publish!
+      update!(status: "published", published_at: Time.current)
+    end
   end
 end
