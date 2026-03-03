@@ -26,5 +26,11 @@ module Marquee
       assert_not page.valid?
       assert_includes page.errors[:status], "is not included in the list"
     end
+
+    test "rejects invalid page_type" do
+      page = Marquee::Page.new(title: "Test", slug: "test", page_type: "bogus")
+      assert_not page.valid?
+      assert_includes page.errors[:page_type], "is not included in the list"
+    end
   end
 end
