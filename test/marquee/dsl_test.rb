@@ -63,4 +63,34 @@ class Marquee::DslTest < ActiveSupport::TestCase
     assert_equal "marquee_pages/pricing", page.template_path
     assert_equal 1, Marquee::Page.where(slug: "pricing").count
   end
+
+  test "sync! with version creates deployed version on existing pages" do
+    Marquee::Page.create!(title: "Pricing", slug: "pricing")
+
+    Marquee.define_page :pricing do
+      title "Pricing"
+      page_type :pricing
+      template_path "marquee_pages/pricing"
+    end
+
+    Marquee::PageDefinition.sync!(version: "v2.0.0")
+
+    page = Marquee::Page.find_by(slug: "pricing")
+    assert_equal "v2.0.0", page.current_version
+    assert_equal "deployed", page.versions.where(action: "deployed").last.action
+  end
+
+  test "sync! with version does not create deployed version on new pages" do
+    Marquee.define_page :"new-page" do
+      title "New Page"
+      template_path "marquee_pages/new"
+    end
+
+    Marquee::PageDefinition.sync!(version: "v1.0.0")
+
+    page = Marquee::Page.find_by(slug: "new-page")
+    assert_not_nil page
+    assert_nil page.current_version
+    assert_equal 0, page.versions.where(action: "deployed").count
+  end
 end

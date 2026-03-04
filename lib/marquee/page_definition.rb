@@ -6,16 +6,22 @@ module Marquee
       @registry ||= {}
     end
 
-    def self.sync!
+    def self.sync!(version: nil)
       registry.each_value do |defn|
         page = Page.find_or_initialize_by(slug: defn.slug)
-        page.update!(
+        attrs = {
           title: defn.title,
           page_type: defn.page_type,
           meta_title: defn.meta_title,
           meta_description: defn.meta_description,
           template_path: defn.template_path
-        )
+        }
+        new_record = page.new_record?
+        page.update!(attrs)
+
+        if version && !new_record
+          page.bump_version!(version)
+        end
       end
     end
 

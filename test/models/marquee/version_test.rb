@@ -20,19 +20,35 @@ module Marquee
       assert version.snapshot.key?("title")
     end
 
-    test "auto-creates version on page update with changeset" do
-      page = Marquee::Page.create!(title: "Original", slug: "ver-update")
-      page.update!(title: "Updated")
-      versions = page.versions.order(:created_at)
-      assert_equal 2, versions.count
-      assert_equal "updated", versions.last.action
-      assert_equal({ "title" => [ "Original", "Updated" ] }, versions.last.changeset)
-    end
-
     test "records published action when page is published" do
       page = Marquee::Page.create!(title: "Pub", slug: "ver-pub")
       page.publish!
       assert_equal "published", page.versions.order(:created_at).last.action
+    end
+
+    test "deployed is a valid version action" do
+      page = Marquee::Page.create!(title: "Test", slug: "ver-deploy")
+      version = page.versions.create!(action: "deployed", snapshot: {})
+      assert version.valid?
+    end
+
+    test "bump_version! creates deployed version with label" do
+      page = Marquee::Page.create!(title: "Test", slug: "ver-bump")
+      page.bump_version!("v1.2.0")
+
+      assert_equal "v1.2.0", page.current_version
+      deploy_version = page.versions.where(action: "deployed").last
+      assert_not_nil deploy_version
+      assert_equal({ "current_version" => "v1.2.0" }, deploy_version.changeset)
+    end
+
+    test "record_version! creates explicit version" do
+      page = Marquee::Page.create!(title: "Test", slug: "ver-explicit")
+      page.record_version!("updated", changeset: { "title" => %w[Old New] })
+
+      version = page.versions.order(:created_at).last
+      assert_equal "updated", version.action
+      assert_equal({ "title" => %w[Old New] }, version.changeset)
     end
   end
 end
