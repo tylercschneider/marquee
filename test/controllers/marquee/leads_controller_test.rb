@@ -80,5 +80,40 @@ module Marquee
 
       assert_equal({ "company" => "Acme" }, Marquee::Lead.last.data)
     end
+
+    test "POST /leads records conversion when visitor has experiment assignment" do
+      experiment = Marquee::Experiment.create!(
+        name: "Conv test", page: @page, status: "running", started_at: Time.current
+      )
+      variant = Marquee::Variant.create!(
+        experiment: experiment, name: "Control",
+        template_path: "marquee_pages/test_page", is_control: true
+      )
+
+      # Visit page to get assigned
+      get "/marquee/lead-page"
+      vid = cookies[:marquee_vid]
+
+      # Ensure assignment exists
+      assert Marquee::Assignment.find_by(visitor_token: vid), "Expected assignment to exist"
+
+      post "/marquee/leads", params: {
+        lead: { email: "convert@example.com", source_page_id: @page.id }
+      }
+
+      lead = Marquee::Lead.last
+      assert_equal experiment.id, lead.converted_experiment_id
+      assert lead.converted_variant_id.present?
+    end
+
+    test "POST /leads does not set conversion fields when no experiment" do
+      post "/marquee/leads", params: {
+        lead: { email: "noexp@example.com", source_page_id: @page.id }
+      }
+
+      lead = Marquee::Lead.last
+      assert_nil lead.converted_experiment_id
+      assert_nil lead.converted_variant_id
+    end
   end
 end
