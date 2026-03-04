@@ -16,6 +16,12 @@ module Marquee
 
     def publish!
       update!(status: "published", published_at: Time.current)
+      record_version!("published")
+    end
+
+    def bump_version!(label)
+      update!(current_version: label)
+      record_version!("deployed", changeset: { "current_version" => label })
     end
   end
 end
