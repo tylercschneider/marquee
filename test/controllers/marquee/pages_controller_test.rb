@@ -5,13 +5,11 @@ module Marquee
     include Engine.routes.url_helpers
 
     test "GET /:slug renders a published page" do
-      page = Marquee::Page.create!(title: "About Us", slug: "about", status: "published", published_at: Time.current)
-      Marquee::Section.create!(page: page, section_type: "hero", position: 0,
-                               content: { "headline" => "Welcome" })
+      Marquee::Page.create!(title: "About Us", slug: "about", status: "published", published_at: Time.current)
 
       get "/marquee/about"
       assert_response :success
-      assert_match "Welcome", response.body
+      assert_match "About Us", response.body
     end
 
     test "GET /:slug returns 404 for draft page" do
@@ -22,11 +20,10 @@ module Marquee
     end
 
     test "GET /:slug includes SEO meta tags" do
-      page = Marquee::Page.create!(
+      Marquee::Page.create!(
         title: "About", slug: "about-seo", status: "published", published_at: Time.current,
         meta_title: "About Us - TestApp", meta_description: "Learn about us"
       )
-      Marquee::Section.create!(page: page, section_type: "hero", position: 0, content: {})
 
       get "/marquee/about-seo"
       assert_response :success

@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_03_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_04_000001) do
   create_table "marquee_pages", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "created_by_id"
-    t.text "custom_css"
-    t.text "custom_js"
+    t.string "current_version"
     t.text "meta_description"
     t.string "meta_title"
     t.string "og_image"
@@ -25,26 +24,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_000002) do
     t.text "schema_markup"
     t.string "slug", null: false
     t.string "status", default: "draft", null: false
-    t.string "template"
+    t.string "template_path"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["position"], name: "index_marquee_pages_on_position"
     t.index ["slug"], name: "index_marquee_pages_on_slug", unique: true
     t.index ["status"], name: "index_marquee_pages_on_status"
-  end
-
-  create_table "marquee_sections", force: :cascade do |t|
-    t.json "content", default: {}
-    t.datetime "created_at", null: false
-    t.string "css_class"
-    t.integer "page_id", null: false
-    t.integer "position", default: 0, null: false
-    t.string "section_type", null: false
-    t.json "settings", default: {}
-    t.datetime "updated_at", null: false
-    t.boolean "visible", default: true, null: false
-    t.index ["page_id", "position"], name: "index_marquee_sections_on_page_id_and_position"
-    t.index ["page_id"], name: "index_marquee_sections_on_page_id"
   end
 
   create_table "marquee_versions", force: :cascade do |t|
@@ -60,6 +45,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_000002) do
     t.index ["versionable_type", "versionable_id"], name: "idx_marquee_versions_on_versionable"
     t.index ["user_id"], name: "index_marquee_versions_on_user_id"
   end
-
-  add_foreign_key "marquee_sections", "marquee_pages", column: "page_id"
 end
