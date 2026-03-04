@@ -31,5 +31,19 @@ module Marquee
     def meta_description(value = nil)
       value ? @_meta_description = value : @_meta_description
     end
+
+    private
+
+    def method_missing(name, **content, &block)
+      if Marquee::Section::SECTION_TYPES.include?(name.to_s)
+        @sections << { type: name.to_s, content: content.transform_keys(&:to_s) }
+      else
+        super
+      end
+    end
+
+    def respond_to_missing?(name, include_private = false)
+      Marquee::Section::SECTION_TYPES.include?(name.to_s) || super
+    end
   end
 end
