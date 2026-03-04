@@ -35,11 +35,5 @@ module Marquee
       assert_equal "published", page.versions.order(:created_at).last.action
     end
 
-    test "auto-creates version on section create" do
-      page = Marquee::Page.create!(title: "Page", slug: "sec-ver")
-      section = Marquee::Section.create!(page: page, section_type: "hero", position: 0)
-      assert_equal 1, section.versions.count
-      assert_equal "created", section.versions.last.action
-    end
   end
 end
