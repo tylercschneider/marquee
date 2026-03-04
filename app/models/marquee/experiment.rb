@@ -11,6 +11,22 @@ module Marquee
 
     scope :running, -> { where(status: "running") }
 
+    def start!
+      update!(status: "running", started_at: Time.current)
+    end
+
+    def pause!
+      update!(status: "paused")
+    end
+
+    def resume!
+      update!(status: "running")
+    end
+
+    def complete!
+      update!(status: "completed", ended_at: Time.current)
+    end
+
     def results
       variants.map do |variant|
         assignment_count = assignments.where(variant: variant).count
