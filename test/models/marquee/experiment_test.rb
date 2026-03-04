@@ -59,6 +59,32 @@ module Marquee
       assert_includes experiment.variants, variant
     end
 
+    test "start! sets status to running and started_at" do
+      experiment = Marquee::Experiment.create!(name: "Test", page: @page)
+      experiment.start!
+      assert_equal "running", experiment.status
+      assert_not_nil experiment.started_at
+    end
+
+    test "pause! sets status to paused" do
+      experiment = Marquee::Experiment.create!(name: "Test", page: @page, status: "running", started_at: Time.current)
+      experiment.pause!
+      assert_equal "paused", experiment.status
+    end
+
+    test "resume! sets status to running from paused" do
+      experiment = Marquee::Experiment.create!(name: "Test", page: @page, status: "paused", started_at: Time.current)
+      experiment.resume!
+      assert_equal "running", experiment.status
+    end
+
+    test "complete! sets status to completed and ended_at" do
+      experiment = Marquee::Experiment.create!(name: "Test", page: @page, status: "running", started_at: Time.current)
+      experiment.complete!
+      assert_equal "completed", experiment.status
+      assert_not_nil experiment.ended_at
+    end
+
     test "destroys variants when destroyed" do
       experiment = Marquee::Experiment.create!(name: "Test", page: @page)
       Marquee::Variant.create!(

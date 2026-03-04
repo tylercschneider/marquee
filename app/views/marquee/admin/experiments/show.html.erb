@@ -6,6 +6,20 @@
   <strong>Metric:</strong> <%= @experiment.metric %>
 </p>
 
+<div class="experiment-actions">
+  <% if @experiment.status == "draft" %>
+    <%= button_to "Start", start_admin_experiment_path(@experiment), class: "btn btn-primary" %>
+  <% end %>
+  <% if @experiment.status == "running" %>
+    <%= button_to "Pause", pause_admin_experiment_path(@experiment), class: "btn btn-warning" %>
+    <%= button_to "Complete", complete_admin_experiment_path(@experiment), class: "btn btn-success" %>
+  <% end %>
+  <% if @experiment.status == "paused" %>
+    <%= button_to "Resume", resume_admin_experiment_path(@experiment), class: "btn btn-primary" %>
+    <%= button_to "Complete", complete_admin_experiment_path(@experiment), class: "btn btn-success" %>
+  <% end %>
+</div>
+
 <h3>Results</h3>
 
 <table>
