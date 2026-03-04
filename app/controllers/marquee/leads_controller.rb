@@ -3,6 +3,7 @@ module Marquee
     def create
       @lead = Lead.new(lead_params)
       @lead.visitor_token = visitor_token
+      record_conversion(@lead)
 
       if @lead.save
         Marquee.instrument("lead.created", email: @lead.email, page_id: @lead.source_page_id)
@@ -17,6 +18,19 @@ module Marquee
 
     def lead_params
       params.require(:lead).permit(:email, :name, :source_page_id, data: {})
+    end
+
+    def record_conversion(lead)
+      return unless lead.source_page
+
+      experiment = lead.source_page.experiments.running.first
+      return unless experiment
+
+      assignment = experiment.assignments.find_by(visitor_token: lead.visitor_token)
+      return unless assignment
+
+      lead.converted_experiment_id = experiment.id
+      lead.converted_variant_id = assignment.variant_id
     end
   end
 end
