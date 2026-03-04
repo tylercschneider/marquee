@@ -1,0 +1,26 @@
+<h2>Experiments</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Page</th>
+      <th>Status</th>
+      <th>Metric</th>
+      <th>Started</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @experiments.each do |experiment| %>
+      <tr>
+        <td><%= link_to experiment.name, admin_experiment_path(experiment) %></td>
+        <td><%= experiment.page.title %></td>
+        <td><span class="badge badge-<%= experiment.status %>"><%= experiment.status %></span></td>
+        <td><%= experiment.metric %></td>
+        <td><%= experiment.started_at&.strftime("%b %d, %Y") || "—" %></td>
+        <td><%= link_to "View", admin_experiment_path(experiment) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
