@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Marquee</title>
+  <% if @page %>
+    <title><%= @page.meta_title.presence || @page.title %></title>
+    <% if @page.meta_description.present? %>
+      <meta name="description" content="<%= @page.meta_description %>">
+      <meta property="og:description" content="<%= @page.meta_description %>">
+    <% end %>
+    <meta property="og:title" content="<%= @page.meta_title.presence || @page.title %>">
+    <meta property="og:type" content="website">
+  <% end %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-
   <%= yield :head %>
-
-  <%= stylesheet_link_tag    "marquee/application", media: "all" %>
 </head>
 <body>
 
