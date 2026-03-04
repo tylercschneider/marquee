@@ -17,4 +17,9 @@ class Marquee::InstallGeneratorTest < Rails::Generators::TestCase
       assert_match "config.site_name", content
     end
   end
+
+  test "shows post-install message" do
+    output = run_generator
+    assert_match "Marquee installed", output
+  end
 end
