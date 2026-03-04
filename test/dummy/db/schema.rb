@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_05_000003) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_000004) do
   create_table "marquee_assignments", force: :cascade do |t|
     t.bigint "experiment_id", null: false
     t.bigint "variant_id", null: false
@@ -24,6 +24,35 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_05_000003) do
     t.index ["visitor_token"], name: "index_marquee_assignments_on_visitor_token"
   end
 
+
+  create_table "marquee_funnel_progresses", force: :cascade do |t|
+    t.bigint "funnel_step_id", null: false
+    t.string "visitor_token", null: false
+    t.datetime "created_at", null: false
+    t.index ["funnel_step_id", "visitor_token"], name: "idx_marquee_funnel_progresses_step_visitor", unique: true
+    t.index ["funnel_step_id"], name: "index_marquee_funnel_progresses_on_funnel_step_id"
+  end
+
+  create_table "marquee_funnel_steps", force: :cascade do |t|
+    t.bigint "funnel_id", null: false
+    t.bigint "page_id", null: false
+    t.integer "position", null: false
+    t.string "label", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["funnel_id", "position"], name: "index_marquee_funnel_steps_on_funnel_id_and_position", unique: true
+    t.index ["funnel_id"], name: "index_marquee_funnel_steps_on_funnel_id"
+    t.index ["page_id"], name: "index_marquee_funnel_steps_on_page_id"
+  end
+
+  create_table "marquee_funnels", force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "name", null: false
+    t.string "status", default: "draft", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_marquee_funnels_on_slug", unique: true
+  end
 
   create_table "marquee_experiments", force: :cascade do |t|
     t.bigint "page_id", null: false
