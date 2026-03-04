@@ -1,0 +1,24 @@
+<h2>Pages</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Slug</th>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @pages.each do |page| %>
+      <tr>
+        <td><%= page.title %></td>
+        <td><code>/<%= page.slug %></code></td>
+        <td><%= page.page_type %></td>
+        <td><span class="badge badge-<%= page.status %>"><%= page.status %></span></td>
+        <td><%= page.current_version || "—" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
