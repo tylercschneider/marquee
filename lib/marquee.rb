@@ -4,6 +4,7 @@ require "marquee/events/log_adapter"
 require "marquee/events/null_adapter"
 require "marquee/events/ahoy_adapter"
 require "marquee/configuration"
+require "marquee/experiment_definition"
 require "marquee/page_definition"
 require "marquee/engine"
 

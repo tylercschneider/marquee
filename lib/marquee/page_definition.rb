@@ -22,8 +22,27 @@ module Marquee
         if version && !new_record
           page.bump_version!(version)
         end
+
+        sync_experiments!(page, defn.experiments)
       end
     end
+
+    def self.sync_experiments!(page, experiment_defs)
+      experiment_defs.each do |exp_def|
+        experiment = page.experiments.find_or_initialize_by(name: exp_def.name)
+        experiment.metric = exp_def.metric
+        experiment.save!
+
+        exp_def.variants.each do |var_def|
+          variant = experiment.variants.find_or_initialize_by(name: var_def[:name])
+          variant.template_path = var_def[:template_path]
+          variant.is_control = var_def[:control]
+          variant.weight = var_def[:weight]
+          variant.save!
+        end
+      end
+    end
+    private_class_method :sync_experiments!
 
     def initialize(slug, &block)
       @slug = slug.to_s
@@ -32,7 +51,12 @@ module Marquee
       @_meta_title = nil
       @_meta_description = nil
       @_template_path = nil
+      @_experiments = []
       instance_eval(&block) if block
+    end
+
+    def experiments
+      @_experiments
     end
 
     def title(value = nil)
@@ -53,6 +77,10 @@ module Marquee
 
     def template_path(value = nil)
       value ? @_template_path = value : @_template_path
+    end
+
+    def experiment(name, &block)
+      @_experiments << ExperimentDefinition.new(name, &block)
     end
   end
 end
