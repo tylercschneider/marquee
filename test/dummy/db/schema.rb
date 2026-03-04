@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_05_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_000003) do
   create_table "marquee_assignments", force: :cascade do |t|
     t.bigint "experiment_id", null: false
     t.bigint "variant_id", null: false
@@ -49,6 +49,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_05_000002) do
     t.index ["experiment_id"], name: "index_marquee_variants_on_experiment_id"
   end
 
+
+  create_table "marquee_leads", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "name"
+    t.json "data", default: {}
+    t.bigint "source_page_id", null: false
+    t.string "visitor_token"
+    t.string "status", default: "new", null: false
+    t.bigint "converted_experiment_id"
+    t.bigint "converted_variant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["converted_experiment_id"], name: "index_marquee_leads_on_converted_experiment_id"
+    t.index ["converted_variant_id"], name: "index_marquee_leads_on_converted_variant_id"
+    t.index ["email"], name: "index_marquee_leads_on_email"
+    t.index ["source_page_id"], name: "index_marquee_leads_on_source_page_id"
+    t.index ["visitor_token"], name: "index_marquee_leads_on_visitor_token"
+  end
 
   create_table "marquee_pages", force: :cascade do |t|
     t.datetime "created_at", null: false
