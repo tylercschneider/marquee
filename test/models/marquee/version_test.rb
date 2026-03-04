@@ -34,6 +34,5 @@ module Marquee
       page.publish!
       assert_equal "published", page.versions.order(:created_at).last.action
     end
-
   end
 end
