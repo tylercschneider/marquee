@@ -1,0 +1,24 @@
+<h2>Leads</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Name</th>
+      <th>Source Page</th>
+      <th>Status</th>
+      <th>Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @leads.each do |lead| %>
+      <tr>
+        <td><%= lead.email %></td>
+        <td><%= lead.name || "—" %></td>
+        <td><%= lead.source_page.title %></td>
+        <td><span class="badge badge-<%= lead.status %>"><%= lead.status %></span></td>
+        <td><%= lead.created_at.strftime("%b %d, %Y %H:%M") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
