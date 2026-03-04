@@ -3,7 +3,7 @@ module Marquee
     attr_accessor :site_name, :site_tagline,
                   :admin_auth, :current_user_method,
                   :admin_path, :public_path,
-                  :enable_tracking
+                  :enable_tracking, :event_adapter
 
     def initialize
       @site_name = "My Site"
@@ -13,6 +13,7 @@ module Marquee
       @admin_path = "/admin/site"
       @public_path = "/"
       @enable_tracking = true
+      @event_adapter = Marquee::Events::LogAdapter.new
     end
   end
 end

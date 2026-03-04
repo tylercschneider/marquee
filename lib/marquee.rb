@@ -1,4 +1,7 @@
 require "marquee/version"
+require "marquee/events/base_adapter"
+require "marquee/events/log_adapter"
+require "marquee/events/null_adapter"
 require "marquee/configuration"
 require "marquee/page_definition"
 require "marquee/engine"
@@ -15,5 +18,9 @@ module Marquee
   def self.define_page(slug, &block)
     defn = PageDefinition.new(slug, &block)
     PageDefinition.registry[slug.to_sym] = defn
+  end
+
+  def self.instrument(event_name, **properties)
+    configuration.event_adapter.track(event_name, properties)
   end
 end
