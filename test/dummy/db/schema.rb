@@ -10,7 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_04_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_000001) do
+  create_table "marquee_experiments", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.string "name", null: false
+    t.string "status", default: "draft", null: false
+    t.string "metric", default: "lead_capture", null: false
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.bigint "winning_variant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_marquee_experiments_on_page_id"
+  end
+
+  create_table "marquee_variants", force: :cascade do |t|
+    t.bigint "experiment_id", null: false
+    t.string "name", null: false
+    t.string "template_path", null: false
+    t.integer "weight", default: 1, null: false
+    t.boolean "is_control", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["experiment_id"], name: "index_marquee_variants_on_experiment_id"
+  end
+
+
   create_table "marquee_pages", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "created_by_id"
