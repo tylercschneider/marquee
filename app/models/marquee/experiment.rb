@@ -4,6 +4,7 @@ module Marquee
 
     belongs_to :page
     has_many :variants, dependent: :destroy
+    has_many :assignments, dependent: :destroy
 
     validates :name, presence: true
     validates :status, inclusion: { in: STATUSES }

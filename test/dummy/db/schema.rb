@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_05_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_000002) do
+  create_table "marquee_assignments", force: :cascade do |t|
+    t.bigint "experiment_id", null: false
+    t.bigint "variant_id", null: false
+    t.string "visitor_token", null: false
+    t.datetime "assigned_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["experiment_id", "visitor_token"], name: "idx_marquee_assignments_experiment_visitor", unique: true
+    t.index ["experiment_id"], name: "index_marquee_assignments_on_experiment_id"
+    t.index ["variant_id"], name: "index_marquee_assignments_on_variant_id"
+    t.index ["visitor_token"], name: "index_marquee_assignments_on_visitor_token"
+  end
+
+
   create_table "marquee_experiments", force: :cascade do |t|
     t.bigint "page_id", null: false
     t.string "name", null: false
