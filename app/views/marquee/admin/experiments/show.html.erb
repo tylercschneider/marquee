@@ -1,0 +1,32 @@
+<h2><%= @experiment.name %></h2>
+
+<p>
+  <strong>Page:</strong> <%= @experiment.page.title %> |
+  <strong>Status:</strong> <span class="badge badge-<%= @experiment.status %>"><%= @experiment.status %></span> |
+  <strong>Metric:</strong> <%= @experiment.metric %>
+</p>
+
+<h3>Results</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Variant</th>
+      <th>Type</th>
+      <th>Assignments</th>
+      <th>Conversions</th>
+      <th>Conversion Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @results.each do |result| %>
+      <tr>
+        <td><%= result[:variant_name] %></td>
+        <td><%= result[:is_control] ? "Control" : "Variant" %></td>
+        <td><%= result[:assignments] %></td>
+        <td><%= result[:conversions] %></td>
+        <td><%= number_to_percentage(result[:conversion_rate], precision: 2) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
