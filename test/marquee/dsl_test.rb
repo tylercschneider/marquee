@@ -30,4 +30,21 @@ class Marquee::DslTest < ActiveSupport::TestCase
     assert_equal "Welcome", defn.sections[0][:content]["headline"]
     assert_equal "cta", defn.sections[1][:type]
   end
+
+  test "sync! creates pages and sections in database" do
+    Marquee.define_page :about do
+      title "About Us"
+      page_type :about
+      hero headline: "Our Story"
+    end
+
+    Marquee::PageDefinition.sync!
+
+    page = Marquee::Page.find_by(slug: "about")
+    assert_not_nil page
+    assert_equal "About Us", page.title
+    assert_equal "about", page.page_type
+    assert_equal 1, page.sections.count
+    assert_equal "Our Story", page.sections.first.content["headline"]
+  end
 end

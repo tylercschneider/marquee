@@ -6,6 +6,27 @@ module Marquee
       @registry ||= {}
     end
 
+    def self.sync!
+      registry.each_value do |defn|
+        page = Page.find_or_initialize_by(slug: defn.slug)
+        page.update!(
+          title: defn.title,
+          page_type: defn.page_type,
+          meta_title: defn.meta_title,
+          meta_description: defn.meta_description
+        )
+
+        page.sections.destroy_all
+        defn.sections.each_with_index do |section, index|
+          page.sections.create!(
+            section_type: section[:type],
+            content: section[:content],
+            position: index
+          )
+        end
+      end
+    end
+
     def initialize(slug, &block)
       @slug = slug.to_s
       @_title = nil
