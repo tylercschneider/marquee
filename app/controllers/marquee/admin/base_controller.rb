@@ -1,6 +1,9 @@
 module Marquee
   module Admin
     class BaseController < Marquee::ApplicationController
+      include Marquee::Engine.routes.url_helpers
+      helper Marquee::Engine.routes.url_helpers
+
       layout "marquee/admin"
 
       before_action :authenticate_admin!
