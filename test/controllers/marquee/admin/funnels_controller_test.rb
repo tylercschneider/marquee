@@ -24,7 +24,7 @@ module Marquee
           visitor_token: "v1"
         )
 
-        get "/marquee/admin/funnels/#{@funnel.id}"
+        get "/admin/marquee/funnels/#{@funnel.id}"
         assert_response :success
         assert_match "Signup Flow", response.body
         assert_match "Landing", response.body
@@ -32,7 +32,7 @@ module Marquee
       end
 
       test "GET /admin/funnels lists funnels" do
-        get "/marquee/admin/funnels"
+        get "/admin/marquee/funnels"
         assert_response :success
         assert_match "Signup Flow", response.body
         assert_match "published", response.body

@@ -45,6 +45,22 @@ module Marquee
     FunnelDefinition.registry[slug.to_sym] = defn
   end
 
+  # Draws public Marquee routes (pages, leads) into the host application's router.
+  # Call this in your host app's +config/routes.rb+ to add public routes at the top level.
+  # @param router [ActionDispatch::Routing::RouteSet] the host app's route context (pass +self+)
+  # @example
+  #   # config/routes.rb
+  #   Rails.application.routes.draw do
+  #     mount Marquee::Engine => "/admin/marquee"
+  #     Marquee.routes(self)
+  #   end
+  def self.routes(router)
+    router.instance_exec do
+      resources :leads, only: :create, controller: "marquee/leads"
+      get "/:slug", to: "marquee/pages#show", as: :marquee_page
+    end
+  end
+
   # Sends an event through the configured event adapter.
   # @param event_name [String] the event name (e.g. "page.viewed", "lead.created")
   # @param properties [Hash] arbitrary event properties

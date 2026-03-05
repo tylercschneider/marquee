@@ -12,7 +12,7 @@ module Marquee
       test "admin is accessible when admin_auth is nil" do
         Marquee.configuration.admin_auth = nil
 
-        get "/marquee/admin/pages"
+        get "/admin/marquee/pages"
         assert_response :success
       end
 
@@ -21,7 +21,7 @@ module Marquee
           controller.head :unauthorized
         }
 
-        get "/marquee/admin/pages"
+        get "/admin/marquee/pages"
         assert_response :unauthorized
       end
     end

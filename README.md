@@ -19,13 +19,16 @@ $ bin/rails generate marquee:install
 $ bin/rails db:migrate
 ```
 
-Mount the engine in `config/routes.rb`:
+Add routes in `config/routes.rb`:
 
 ```ruby
 Rails.application.routes.draw do
-  mount Marquee::Engine => "/"
+  mount Marquee::Engine => "/admin/marquee"  # Admin UI — mount wherever you want
+  Marquee.routes(self)                        # Public routes (/:slug, /leads)
 end
 ```
+
+The engine mount path controls where the admin UI lives. `Marquee.routes` draws public page and lead routes directly into your app (no prefix).
 
 ## Configuration
 
@@ -107,7 +110,7 @@ Funnel progress is recorded automatically when visitors view pages. View step-by
 Capture leads from any page with a form that posts to the leads endpoint:
 
 ```erb
-<%= form_with model: Marquee::Lead.new, url: marquee.leads_path do |f| %>
+<%= form_with model: Marquee::Lead.new, url: leads_path do |f| %>
   <%= f.hidden_field :source_page_id, value: @page.id %>
   <%= f.email_field :email, placeholder: "you@example.com" %>
   <%= f.text_field :name, placeholder: "Your name" %>
@@ -137,7 +140,7 @@ Events tracked automatically:
 
 ## Admin UI
 
-Marquee includes an admin interface at `/admin/` with:
+Marquee includes an admin interface (mounted wherever you choose) with:
 
 - **Pages** — list of all registered pages
 - **Experiments** — status, variant performance, start/pause/resume/complete controls
@@ -148,22 +151,29 @@ Protect it with the `admin_auth` configuration option (see Configuration above).
 
 ## Routes
 
-Marquee provides these routes:
+### Public routes (via `Marquee.routes`)
 
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/:slug` | Render a published page |
 | POST | `/leads` | Create a lead |
-| GET | `/admin/pages` | List pages |
-| GET | `/admin/experiments` | List experiments |
-| GET | `/admin/experiments/:id` | Experiment detail + results |
-| POST | `/admin/experiments/:id/start` | Start an experiment |
-| POST | `/admin/experiments/:id/pause` | Pause an experiment |
-| POST | `/admin/experiments/:id/resume` | Resume an experiment |
-| POST | `/admin/experiments/:id/complete` | Complete an experiment |
-| GET | `/admin/funnels` | List funnels |
-| GET | `/admin/funnels/:id` | Funnel detail + results |
-| GET | `/admin/leads` | List leads |
+
+### Admin routes (via engine mount)
+
+Paths below are relative to your mount point (e.g., `/admin/marquee`):
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/pages` | List pages |
+| GET | `/experiments` | List experiments |
+| GET | `/experiments/:id` | Experiment detail + results |
+| POST | `/experiments/:id/start` | Start an experiment |
+| POST | `/experiments/:id/pause` | Pause an experiment |
+| POST | `/experiments/:id/resume` | Resume an experiment |
+| POST | `/experiments/:id/complete` | Complete an experiment |
+| GET | `/funnels` | List funnels |
+| GET | `/funnels/:id` | Funnel detail + results |
+| GET | `/leads` | List leads |
 
 ## Requirements
 

@@ -13,7 +13,7 @@ module Marquee
 
     test "POST /leads creates a lead" do
       assert_difference "Marquee::Lead.count", 1 do
-        post "/marquee/leads", params: {
+        post "/leads", params: {
           lead: { email: "user@example.com", name: "Test User", source_page_id: @page.id }
         }
       end
@@ -27,10 +27,10 @@ module Marquee
 
     test "POST /leads sets visitor_token from cookie" do
       # Visit a page first to get a cookie
-      get "/marquee/lead-page"
+      get "/lead-page"
       vid = cookies[:marquee_vid]
 
-      post "/marquee/leads", params: {
+      post "/leads", params: {
         lead: { email: "user@example.com", source_page_id: @page.id }
       }
 
@@ -44,7 +44,7 @@ module Marquee
         define_method(:track) { |name, props| events << [ name, props ] }
       end.new
 
-      post "/marquee/leads", params: {
+      post "/leads", params: {
         lead: { email: "user@example.com", source_page_id: @page.id }
       }
 
@@ -56,16 +56,16 @@ module Marquee
     end
 
     test "POST /leads redirects back to page on success" do
-      post "/marquee/leads", params: {
+      post "/leads", params: {
         lead: { email: "user@example.com", source_page_id: @page.id }
       }
 
-      assert_redirected_to "/marquee/lead-page"
+      assert_redirected_to "/lead-page"
     end
 
     test "POST /leads with invalid data re-renders page" do
       assert_no_difference "Marquee::Lead.count" do
-        post "/marquee/leads", params: {
+        post "/leads", params: {
           lead: { email: "", source_page_id: @page.id }
         }
       end
@@ -74,7 +74,7 @@ module Marquee
     end
 
     test "POST /leads stores custom data fields" do
-      post "/marquee/leads", params: {
+      post "/leads", params: {
         lead: { email: "user@example.com", source_page_id: @page.id, data: { company: "Acme" } }
       }
 
@@ -91,13 +91,13 @@ module Marquee
       )
 
       # Visit page to get assigned
-      get "/marquee/lead-page"
+      get "/lead-page"
       vid = cookies[:marquee_vid]
 
       # Ensure assignment exists
       assert Marquee::Assignment.find_by(visitor_token: vid), "Expected assignment to exist"
 
-      post "/marquee/leads", params: {
+      post "/leads", params: {
         lead: { email: "convert@example.com", source_page_id: @page.id }
       }
 
@@ -107,7 +107,7 @@ module Marquee
     end
 
     test "POST /leads does not set conversion fields when no experiment" do
-      post "/marquee/leads", params: {
+      post "/leads", params: {
         lead: { email: "noexp@example.com", source_page_id: @page.id }
       }
 
