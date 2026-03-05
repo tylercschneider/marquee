@@ -3,8 +3,7 @@ module Marquee
     attr_accessor :site_name, :site_tagline,
                   :admin_auth, :current_user_method,
                   :admin_path, :public_path,
-                  :enable_tracking, :event_adapter,
-                  :admin_base_controller
+                  :enable_tracking, :event_adapter
 
     def initialize
       @site_name = "My Site"
@@ -15,7 +14,6 @@ module Marquee
       @public_path = "/"
       @enable_tracking = true
       @event_adapter = Marquee::Events::LogAdapter.new
-      @admin_base_controller = "ActionController::Base"
     end
   end
 end
