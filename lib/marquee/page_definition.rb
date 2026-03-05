@@ -25,6 +25,8 @@ module Marquee
 
         sync_experiments!(page, defn.experiments)
       end
+
+      FunnelDefinition.sync!
     end
 
     def self.sync_experiments!(page, experiment_defs)
