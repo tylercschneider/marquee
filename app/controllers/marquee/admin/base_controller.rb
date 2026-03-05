@@ -1,9 +1,9 @@
 module Marquee
   module Admin
-    class BaseController < ActionController::Base
-      layout "marquee/admin"
+    class BaseController < Marquee.configuration.admin_base_controller.constantize
+      layout -> { custom_base_controller? ? false : "marquee/admin" }
 
-      before_action :authenticate_admin!
+      before_action :authenticate_admin!, unless: :custom_base_controller?
 
       private
 
@@ -11,6 +11,10 @@ module Marquee
         return unless Marquee.configuration.admin_auth
 
         Marquee.configuration.admin_auth.call(self)
+      end
+
+      def custom_base_controller?
+        Marquee.configuration.admin_base_controller != "ActionController::Base"
       end
     end
   end
