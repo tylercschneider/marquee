@@ -9,6 +9,7 @@
     .admin-header { background: #1a1a2e; color: #fff; padding: 12px 24px; display: flex; align-items: center; gap: 24px; }
     .admin-header a { color: #ccc; text-decoration: none; font-size: 14px; }
     .admin-header a:hover { color: #fff; }
+    .admin-header .back-link { margin-right: 8px; padding-right: 16px; border-right: 1px solid #444; }
     .admin-header h1 { font-size: 18px; margin: 0; }
     .admin-content { padding: 24px; max-width: 1200px; }
     table { width: 100%; border-collapse: collapse; }
@@ -23,6 +24,7 @@
 </head>
 <body>
   <div class="admin-header">
+    <%= link_to "← Back", request.script_name.sub(%r{/[^/]+\z}, "").presence || "/", class: "back-link" %>
     <h1>Marquee</h1>
     <%= link_to "Experiments", experiments_path %>
     <%= link_to "Funnels", funnels_path %>
