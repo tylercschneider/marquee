@@ -74,6 +74,34 @@ module Marquee
       assert_match "Test page content", response.body
     end
 
+    test "GET /:slug records funnel progress when page has funnel steps" do
+      page = Marquee::Page.create!(
+        title: "Funnel Page", slug: "funnel-page", status: "published",
+        published_at: Time.current, template_path: "marquee_pages/test_page"
+      )
+      funnel = Marquee::Funnel.create!(name: "Signup", slug: "signup")
+      Marquee::FunnelStep.create!(funnel: funnel, page: page, position: 1, label: "Landing")
+
+      assert_difference "Marquee::FunnelProgress.count", 1 do
+        get "/marquee/funnel-page"
+      end
+      assert_response :success
+    end
+
+    test "GET /:slug does not duplicate funnel progress for same visitor" do
+      page = Marquee::Page.create!(
+        title: "Funnel Page 2", slug: "funnel-page-2", status: "published",
+        published_at: Time.current, template_path: "marquee_pages/test_page"
+      )
+      funnel = Marquee::Funnel.create!(name: "Signup 2", slug: "signup-2")
+      Marquee::FunnelStep.create!(funnel: funnel, page: page, position: 1, label: "Landing")
+
+      get "/marquee/funnel-page-2"
+      assert_no_difference "Marquee::FunnelProgress.count" do
+        get "/marquee/funnel-page-2"
+      end
+    end
+
     test "GET /:slug instruments page.viewed with variant info" do
       page = Marquee::Page.create!(
         title: "Tracked", slug: "tracked", status: "published",

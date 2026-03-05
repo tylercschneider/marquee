@@ -6,6 +6,7 @@ module Marquee
     PAGE_TYPES = %w[homepage landing feature pricing about legal custom].freeze
 
     has_many :experiments, dependent: :destroy
+    has_many :funnel_steps, dependent: :destroy
 
     scope :published, -> { where(status: "published") }
 

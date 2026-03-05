@@ -12,10 +12,17 @@ module Marquee
       end
 
       Marquee.instrument("page.viewed", **event_properties)
+      record_funnel_progress
       render template: template
     end
 
     private
+
+    def record_funnel_progress
+      @page.funnel_steps.find_each do |step|
+        FunnelProgress.find_or_create_by(funnel_step: step, visitor_token: visitor_token)
+      end
+    end
 
     def resolve_template
       if @experiment
