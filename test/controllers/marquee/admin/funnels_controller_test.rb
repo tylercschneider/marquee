@@ -18,6 +18,19 @@ module Marquee
         )
       end
 
+      test "GET /admin/funnels/:id shows funnel with step results" do
+        Marquee::FunnelProgress.create!(
+          funnel_step: @funnel.funnel_steps.first,
+          visitor_token: "v1"
+        )
+
+        get "/marquee/admin/funnels/#{@funnel.id}"
+        assert_response :success
+        assert_match "Signup Flow", response.body
+        assert_match "Landing", response.body
+        assert_match "funnel-landing", response.body
+      end
+
       test "GET /admin/funnels lists funnels" do
         get "/marquee/admin/funnels"
         assert_response :success
