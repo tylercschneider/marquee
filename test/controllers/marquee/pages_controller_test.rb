@@ -10,7 +10,7 @@ module Marquee
         published_at: Time.current, template_path: "marquee_pages/test_page"
       )
 
-      get "/marquee/test"
+      get "/test"
       assert_response :success
       assert_match "Test Page", response.body
       assert_match "Test page content", response.body
@@ -19,7 +19,7 @@ module Marquee
     test "GET /:slug returns 404 for draft page" do
       Marquee::Page.create!(title: "Draft", slug: "draft-page", template_path: "marquee_pages/test_page")
 
-      get "/marquee/draft-page"
+      get "/draft-page"
       assert_response :not_found
     end
 
@@ -30,7 +30,7 @@ module Marquee
         meta_title: "About Us - TestApp", meta_description: "Learn about us"
       )
 
-      get "/marquee/about-seo"
+      get "/about-seo"
       assert_response :success
       assert_match "About Us - TestApp", response.body
       assert_match "Learn about us", response.body
@@ -50,7 +50,7 @@ module Marquee
       )
 
       # Pre-assign this visitor to Variant B
-      get "/marquee/exp-page"
+      get "/exp-page"
       visitor_token = cookies[:marquee_vid]
 
       # Replace assignment with Variant B
@@ -58,7 +58,7 @@ module Marquee
       variant_b = experiment.variants.find_by(name: "Variant B")
       assignment.update!(variant: variant_b)
 
-      get "/marquee/exp-page"
+      get "/exp-page"
       assert_response :success
       assert_match "Variant B content", response.body
     end
@@ -69,7 +69,7 @@ module Marquee
         published_at: Time.current, template_path: "marquee_pages/test_page"
       )
 
-      get "/marquee/no-exp"
+      get "/no-exp"
       assert_response :success
       assert_match "Test page content", response.body
     end
@@ -83,7 +83,7 @@ module Marquee
       Marquee::FunnelStep.create!(funnel: funnel, page: page, position: 1, label: "Landing")
 
       assert_difference "Marquee::FunnelProgress.count", 1 do
-        get "/marquee/funnel-page"
+        get "/funnel-page"
       end
       assert_response :success
     end
@@ -96,9 +96,9 @@ module Marquee
       funnel = Marquee::Funnel.create!(name: "Signup 2", slug: "signup-2")
       Marquee::FunnelStep.create!(funnel: funnel, page: page, position: 1, label: "Landing")
 
-      get "/marquee/funnel-page-2"
+      get "/funnel-page-2"
       assert_no_difference "Marquee::FunnelProgress.count" do
-        get "/marquee/funnel-page-2"
+        get "/funnel-page-2"
       end
     end
 
@@ -121,7 +121,7 @@ module Marquee
         define_method(:track) { |name, props| events << [ name, props ] }
       end.new
 
-      get "/marquee/tracked"
+      get "/tracked"
       assert_response :success
 
       event = events.find { |e| e[0] == "page.viewed" }

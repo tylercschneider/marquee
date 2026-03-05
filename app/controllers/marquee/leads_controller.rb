@@ -7,7 +7,7 @@ module Marquee
 
       if @lead.save
         Marquee.instrument("lead.created", email: @lead.email, page_id: @lead.source_page_id)
-        redirect_to page_path(@lead.source_page.slug)
+        redirect_to main_app.marquee_page_path(@lead.source_page.slug)
       else
         @page = @lead.source_page
         render template: @page.template_path, status: :unprocessable_entity

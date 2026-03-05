@@ -3,7 +3,7 @@ module Marquee
     def marquee_lead_form(page:, **options, &block)
       form_with(
         model: Marquee::Lead.new,
-        url: marquee.leads_path,
+        url: main_app.leads_path,
         **options
       ) do |f|
         concat f.hidden_field(:source_page_id, value: page.id)

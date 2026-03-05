@@ -9,7 +9,7 @@ module Marquee
         Marquee::Page.create!(title: "Pricing", slug: "pricing", status: "published", published_at: Time.current, template_path: "marquee_pages/test_page")
         Marquee::Page.create!(title: "About", slug: "about", status: "draft", template_path: "marquee_pages/test_page")
 
-        get "/marquee/admin/pages"
+        get "/admin/marquee/pages"
         assert_response :success
         assert_match "Pricing", response.body
         assert_match "About", response.body

@@ -14,12 +14,12 @@
   <tbody>
     <% @experiments.each do |experiment| %>
       <tr>
-        <td><%= link_to experiment.name, admin_experiment_path(experiment) %></td>
+        <td><%= link_to experiment.name, experiment_path(experiment) %></td>
         <td><%= experiment.page.title %></td>
         <td><span class="badge badge-<%= experiment.status %>"><%= experiment.status %></span></td>
         <td><%= experiment.metric %></td>
         <td><%= experiment.started_at&.strftime("%b %d, %Y") || "—" %></td>
-        <td><%= link_to "View", admin_experiment_path(experiment) %></td>
+        <td><%= link_to "View", experiment_path(experiment) %></td>
       </tr>
     <% end %>
   </tbody>

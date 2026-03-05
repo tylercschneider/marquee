@@ -1,5 +1,5 @@
 Marquee::Engine.routes.draw do
-  namespace :admin do
+  scope module: :admin do
     resources :experiments, only: [ :index, :show ] do
       member do
         post :start
@@ -8,11 +8,8 @@ Marquee::Engine.routes.draw do
         post :complete
       end
     end
-    resources :leads, only: :index
+    resources :leads, only: :index, as: :admin_leads
     resources :funnels, only: [ :index, :show ]
     resources :pages, only: :index
   end
-
-  resources :leads, only: :create
-  get "/:slug", to: "pages#show", as: :page
 end

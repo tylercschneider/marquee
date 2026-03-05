@@ -24,7 +24,7 @@ module Marquee
       end
 
       test "GET /admin/experiments lists experiments" do
-        get "/marquee/admin/experiments"
+        get "/admin/marquee/experiments"
         assert_response :success
         assert_match "Hero Test", response.body
         assert_match "running", response.body
@@ -32,31 +32,31 @@ module Marquee
 
       test "POST start changes draft to running" do
         draft = Marquee::Experiment.create!(name: "Draft", page: @page, status: "draft")
-        post "/marquee/admin/experiments/#{draft.id}/start"
-        assert_redirected_to "/marquee/admin/experiments/#{draft.id}"
+        post "/admin/marquee/experiments/#{draft.id}/start"
+        assert_redirected_to "/admin/marquee/experiments/#{draft.id}"
         draft.reload
         assert_equal "running", draft.status
         assert_not_nil draft.started_at
       end
 
       test "POST pause changes running to paused" do
-        post "/marquee/admin/experiments/#{@experiment.id}/pause"
-        assert_redirected_to "/marquee/admin/experiments/#{@experiment.id}"
+        post "/admin/marquee/experiments/#{@experiment.id}/pause"
+        assert_redirected_to "/admin/marquee/experiments/#{@experiment.id}"
         @experiment.reload
         assert_equal "paused", @experiment.status
       end
 
       test "POST resume changes paused to running" do
         @experiment.update!(status: "paused")
-        post "/marquee/admin/experiments/#{@experiment.id}/resume"
-        assert_redirected_to "/marquee/admin/experiments/#{@experiment.id}"
+        post "/admin/marquee/experiments/#{@experiment.id}/resume"
+        assert_redirected_to "/admin/marquee/experiments/#{@experiment.id}"
         @experiment.reload
         assert_equal "running", @experiment.status
       end
 
       test "POST complete changes running to completed" do
-        post "/marquee/admin/experiments/#{@experiment.id}/complete"
-        assert_redirected_to "/marquee/admin/experiments/#{@experiment.id}"
+        post "/admin/marquee/experiments/#{@experiment.id}/complete"
+        assert_redirected_to "/admin/marquee/experiments/#{@experiment.id}"
         @experiment.reload
         assert_equal "completed", @experiment.status
         assert_not_nil @experiment.ended_at
@@ -74,7 +74,7 @@ module Marquee
           converted_variant_id: @control.id
         )
 
-        get "/marquee/admin/experiments/#{@experiment.id}"
+        get "/admin/marquee/experiments/#{@experiment.id}"
         assert_response :success
         assert_match "Hero Test", response.body
         assert_match "Control", response.body

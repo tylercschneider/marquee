@@ -12,22 +12,22 @@ module Marquee
     end
 
     test "sets marquee_vid cookie on first visit" do
-      get "/marquee/identity-test"
+      get "/identity-test"
       assert_response :success
       assert cookies[:marquee_vid].present?, "Expected marquee_vid cookie to be set"
     end
 
     test "marquee_vid cookie is a valid UUID" do
-      get "/marquee/identity-test"
+      get "/identity-test"
       uuid = cookies[:marquee_vid]
       assert_match(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/, uuid)
     end
 
     test "marquee_vid cookie persists across requests" do
-      get "/marquee/identity-test"
+      get "/identity-test"
       first_vid = cookies[:marquee_vid]
 
-      get "/marquee/identity-test"
+      get "/identity-test"
       second_vid = cookies[:marquee_vid]
 
       assert_equal first_vid, second_vid
