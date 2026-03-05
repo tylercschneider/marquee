@@ -10,24 +10,44 @@ require "marquee/page_definition"
 require "marquee/engine"
 
 module Marquee
+  # Returns the current configuration instance.
+  # @return [Marquee::Configuration]
   def self.configuration
     @configuration ||= Configuration.new
   end
 
+  # Yields the configuration instance for modification.
+  # @yieldparam config [Marquee::Configuration]
+  # @example
+  #   Marquee.configure do |config|
+  #     config.site_name = "My App"
+  #     config.event_adapter = Marquee::Events::AhoyAdapter.new
+  #   end
   def self.configure
     yield(configuration)
   end
 
+  # Registers a page definition. Call +PageDefinition.sync!+ to persist to the database.
+  # @param slug [String, Symbol] unique page identifier (becomes the URL slug)
+  # @yieldparam definition [Marquee::PageDefinition] block to configure title, template_path, SEO, experiments
+  # @return [Marquee::PageDefinition]
   def self.define_page(slug, &block)
     defn = PageDefinition.new(slug, &block)
     PageDefinition.registry[slug.to_sym] = defn
   end
 
+  # Registers a funnel definition. Synced to the database when +PageDefinition.sync!+ is called.
+  # @param slug [String, Symbol] unique funnel identifier
+  # @yieldparam definition [Marquee::FunnelDefinition] block to configure name and steps
+  # @return [Marquee::FunnelDefinition]
   def self.define_funnel(slug, &block)
     defn = FunnelDefinition.new(slug, &block)
     FunnelDefinition.registry[slug.to_sym] = defn
   end
 
+  # Sends an event through the configured event adapter.
+  # @param event_name [String] the event name (e.g. "page.viewed", "lead.created")
+  # @param properties [Hash] arbitrary event properties
   def self.instrument(event_name, **properties)
     configuration.event_adapter.track(event_name, properties)
   end

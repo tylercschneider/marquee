@@ -13,6 +13,6 @@
 
 ## P2 — Nice to Have
 
-- [ ] Consider squashing the sections create+drop migrations
-- [ ] Consider broadening Rails dependency to >= 7.1
-- [ ] Add YARD docs to public API methods in lib/marquee.rb
+- [x] Squash sections create+drop migrations into clean pages migration
+- [x] Broaden Rails dependency to >= 7.1 (migrations also updated to 7.1)
+- [x] Add YARD docs to public API methods in lib/marquee.rb

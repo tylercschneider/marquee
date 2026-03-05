@@ -1,4 +1,4 @@
-class CreateMarqueeFunnels < ActiveRecord::Migration[8.1]
+class CreateMarqueeFunnels < ActiveRecord::Migration[7.1]
   def change
     create_table :marquee_funnels do |t|
       t.string :slug, null: false

@@ -1,4 +1,4 @@
-class CreateMarqueeAssignments < ActiveRecord::Migration[8.1]
+class CreateMarqueeAssignments < ActiveRecord::Migration[7.1]
   def change
     create_table :marquee_assignments do |t|
       t.references :experiment, null: false, foreign_key: { to_table: :marquee_experiments }

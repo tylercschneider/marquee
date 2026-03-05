@@ -1,4 +1,4 @@
-class CreateMarqueeLeads < ActiveRecord::Migration[8.1]
+class CreateMarqueeLeads < ActiveRecord::Migration[7.1]
   def change
     create_table :marquee_leads do |t|
       t.string :email, null: false
