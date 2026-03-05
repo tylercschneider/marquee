@@ -11,8 +11,6 @@ class CreateMarqueeExperimentsAndVariants < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :marquee_experiments, :page_id
-
     create_table :marquee_variants do |t|
       t.references :experiment, null: false, foreign_key: { to_table: :marquee_experiments }
       t.string :name, null: false
@@ -21,7 +19,5 @@ class CreateMarqueeExperimentsAndVariants < ActiveRecord::Migration[7.1]
       t.boolean :is_control, default: false, null: false
       t.timestamps
     end
-
-    add_index :marquee_variants, :experiment_id
   end
 end
