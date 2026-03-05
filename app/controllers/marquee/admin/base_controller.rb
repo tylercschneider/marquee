@@ -1,6 +1,6 @@
 module Marquee
   module Admin
-    class BaseController < ActionController::Base
+    class BaseController < Marquee::ApplicationController
       layout "marquee/admin"
 
       before_action :authenticate_admin!
