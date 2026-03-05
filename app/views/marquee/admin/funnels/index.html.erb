@@ -1,0 +1,24 @@
+<h2>Funnels</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Steps</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @funnels.each do |funnel| %>
+      <tr>
+        <td><%= link_to funnel.name, admin_funnel_path(funnel) %></td>
+        <td><span class="badge badge-<%= funnel.status %>"><%= funnel.status %></span></td>
+        <td><%= funnel.funnel_steps.size %></td>
+        <td><%= funnel.created_at.strftime("%b %d, %Y") %></td>
+        <td><%= link_to "View", admin_funnel_path(funnel) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

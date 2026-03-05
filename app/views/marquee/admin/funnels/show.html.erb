@@ -1,0 +1,31 @@
+<h2><%= @funnel.name %></h2>
+
+<p>
+  <strong>Status:</strong> <span class="badge badge-<%= @funnel.status %>"><%= @funnel.status %></span> |
+  <strong>Steps:</strong> <%= @funnel.funnel_steps.size %>
+</p>
+
+<h3>Step Results</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>Label</th>
+      <th>Page</th>
+      <th>Visitors</th>
+      <th>Drop-off</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @results.each do |result| %>
+      <tr>
+        <td><%= result[:position] %></td>
+        <td><%= result[:label] %></td>
+        <td><%= result[:page_slug] %></td>
+        <td><%= result[:visitors] %></td>
+        <td><%= number_to_percentage(result[:drop_off_rate], precision: 1) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
