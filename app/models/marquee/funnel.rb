@@ -16,10 +16,10 @@ module Marquee
       steps.map do |step|
         visitors = step.progresses.distinct.count(:visitor_token)
         drop_off_rate = if previous_visitors.nil? || previous_visitors == 0
-                          0.0
-                        else
-                          ((1 - (visitors.to_f / previous_visitors)) * 100).round(2)
-                        end
+          0.0
+        else
+          ((1 - (visitors.to_f / previous_visitors)) * 100).round(2)
+        end
         previous_visitors = visitors
 
         {
