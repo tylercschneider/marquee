@@ -168,7 +168,7 @@ Marquee provides these routes:
 ## Requirements
 
 - Ruby 3.1+
-- Rails 8.1+
+- Rails 7.1+
 
 ## License
 

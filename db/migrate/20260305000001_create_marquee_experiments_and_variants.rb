@@ -1,4 +1,4 @@
-class CreateMarqueeExperimentsAndVariants < ActiveRecord::Migration[8.1]
+class CreateMarqueeExperimentsAndVariants < ActiveRecord::Migration[7.1]
   def change
     create_table :marquee_experiments do |t|
       t.references :page, null: false, foreign_key: { to_table: :marquee_pages }

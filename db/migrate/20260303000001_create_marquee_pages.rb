@@ -9,9 +9,8 @@ class CreateMarqueePages < ActiveRecord::Migration[7.1]
       t.text :meta_description
       t.string :og_image
       t.text :schema_markup
-      t.text :custom_css
-      t.text :custom_js
-      t.string :template
+      t.string :template_path
+      t.string :current_version
       t.datetime :published_at
       t.bigint :created_by_id
       t.integer :position, null: false, default: 0
