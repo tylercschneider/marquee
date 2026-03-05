@@ -9,6 +9,7 @@ Marquee::Engine.routes.draw do
       end
     end
     resources :leads, only: :index
+    resources :funnels, only: [ :index, :show ]
     resources :pages, only: :index
   end
 
