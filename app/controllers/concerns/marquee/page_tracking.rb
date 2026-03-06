@@ -7,7 +7,9 @@ module Marquee
     private
 
     def track_marquee_page(slug)
-      @page = Marquee::Page.published.find_by!(slug: slug)
+      @page = Marquee::Page.published.find_by(slug: slug)
+      return unless @page
+
       @experiment = @page.experiments.running.first
 
       if @experiment
