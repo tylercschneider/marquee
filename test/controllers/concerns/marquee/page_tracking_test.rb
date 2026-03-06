@@ -68,5 +68,10 @@ module Marquee
     ensure
       Marquee.configuration.event_adapter = original
     end
+
+    test "track_marquee_page skips tracking when page is not found" do
+      get "/tracking-test?slug=nonexistent"
+      assert_response :success
+    end
   end
 end
