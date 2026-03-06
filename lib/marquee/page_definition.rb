@@ -17,6 +17,10 @@ module Marquee
           template_path: defn.template_path
         }
         new_record = page.new_record?
+        if new_record
+          attrs[:status] = "published"
+          attrs[:published_at] = Time.current
+        end
         page.update!(attrs)
 
         if version && !new_record

@@ -45,6 +45,8 @@ class Marquee::DslTest < ActiveSupport::TestCase
     assert_equal "marquee_pages/about", page.template_path
     assert_equal "About - TestApp", page.meta_title
     assert_equal "Learn about us", page.meta_description
+    assert_equal "published", page.status
+    assert_not_nil page.published_at
   end
 
   test "sync! upserts existing pages" do
