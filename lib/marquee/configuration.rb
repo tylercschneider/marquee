@@ -3,7 +3,8 @@ module Marquee
     attr_accessor :site_name, :site_tagline,
                   :admin_auth, :current_user_method,
                   :admin_path, :public_path,
-                  :enable_tracking, :event_adapter
+                  :enable_tracking, :event_adapter,
+                  :on_lead_created
 
     def initialize
       @site_name = "My Site"

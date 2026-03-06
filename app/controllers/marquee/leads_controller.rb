@@ -7,6 +7,7 @@ module Marquee
 
       if @lead.save
         Marquee.instrument("lead.created", email: @lead.email, page_id: @lead.source_page_id)
+        Marquee.configuration.on_lead_created&.call(@lead)
         redirect_to main_app.marquee_page_path(@lead.source_page.slug)
       else
         @page = @lead.source_page

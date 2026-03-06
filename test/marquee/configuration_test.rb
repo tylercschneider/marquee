@@ -23,5 +23,6 @@ class Marquee::ConfigurationTest < ActiveSupport::TestCase
     assert_nil config.current_user_method
     assert_equal true, config.enable_tracking
     assert_instance_of Marquee::Events::LogAdapter, config.event_adapter
+    assert_nil config.on_lead_created
   end
 end
