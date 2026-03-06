@@ -115,5 +115,20 @@ module Marquee
       assert_nil lead.converted_experiment_id
       assert_nil lead.converted_variant_id
     end
+
+    test "POST /leads calls on_lead_created callback when configured" do
+      callback_leads = []
+      original = Marquee.configuration.on_lead_created
+      Marquee.configuration.on_lead_created = ->(lead) { callback_leads << lead }
+
+      post "/leads", params: {
+        lead: { email: "callback@example.com", source_page_id: @page.id }
+      }
+
+      assert_equal 1, callback_leads.size
+      assert_equal "callback@example.com", callback_leads.first.email
+    ensure
+      Marquee.configuration.on_lead_created = original
+    end
   end
 end
