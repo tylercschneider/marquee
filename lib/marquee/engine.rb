@@ -5,8 +5,8 @@ module Marquee
     initializer "marquee.sync_pages", after: :finisher_hook do
       config.after_initialize do
         PageDefinition.sync!
-      rescue ActiveRecord::NoDatabaseError, ActiveRecord::StatementInvalid
-        # DB not ready (migrations pending, table doesn't exist yet)
+      rescue => e # rubocop:disable Style/RescueStandardError
+        Rails.logger.warn "[Marquee] Auto-sync skipped: #{e.message}"
       end
     end
   end
