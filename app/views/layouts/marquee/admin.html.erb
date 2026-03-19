@@ -25,7 +25,7 @@
 </head>
 <body>
   <div class="admin-header">
-    <%= link_to "← Back", request.script_name.sub(%r{/[^/]+\z}, "").presence || "/", class: "back-link" %>
+    <%= link_to "← Back", main_app.root_path, class: "back-link" %>
     <h1>Marquee</h1>
     <%= link_to "Experiments", experiments_path %>
     <%= link_to "Funnels", funnels_path %>
