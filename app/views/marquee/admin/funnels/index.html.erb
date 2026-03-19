@@ -13,11 +13,11 @@
   <tbody>
     <% @funnels.each do |funnel| %>
       <tr>
-        <td><%= link_to funnel.name, funnel_path(funnel) %></td>
+        <td><%= link_to funnel.name, marquee.funnel_path(funnel) %></td>
         <td><span class="badge badge-<%= funnel.status %>"><%= funnel.status %></span></td>
         <td><%= funnel.funnel_steps.size %></td>
         <td><%= funnel.created_at.strftime("%b %d, %Y") %></td>
-        <td><%= link_to "View", funnel_path(funnel) %></td>
+        <td><%= link_to "View", marquee.funnel_path(funnel) %></td>
       </tr>
     <% end %>
   </tbody>

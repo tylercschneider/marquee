@@ -13,25 +13,25 @@ module Marquee
       def start
         experiment = Marquee::Experiment.find(params[:id])
         experiment.start!
-        redirect_to experiment_path(experiment), notice: "Experiment started."
+        redirect_to marquee.experiment_path(experiment), notice: "Experiment started."
       end
 
       def pause
         experiment = Marquee::Experiment.find(params[:id])
         experiment.pause!
-        redirect_to experiment_path(experiment), notice: "Experiment paused."
+        redirect_to marquee.experiment_path(experiment), notice: "Experiment paused."
       end
 
       def resume
         experiment = Marquee::Experiment.find(params[:id])
         experiment.resume!
-        redirect_to experiment_path(experiment), notice: "Experiment resumed."
+        redirect_to marquee.experiment_path(experiment), notice: "Experiment resumed."
       end
 
       def complete
         experiment = Marquee::Experiment.find(params[:id])
         experiment.complete!
-        redirect_to experiment_path(experiment), notice: "Experiment completed."
+        redirect_to marquee.experiment_path(experiment), notice: "Experiment completed."
       end
     end
   end

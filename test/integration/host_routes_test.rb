@@ -13,4 +13,13 @@ class HostRoutesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, 'href="/"'
   end
+
+  test "admin nav links use marquee engine prefix" do
+    get "/admin/marquee/experiments"
+    assert_response :success
+    assert_includes response.body, 'href="/admin/marquee/experiments"'
+    assert_includes response.body, 'href="/admin/marquee/funnels"'
+    assert_includes response.body, 'href="/admin/marquee/leads"'
+    assert_includes response.body, 'href="/admin/marquee/pages"'
+  end
 end
