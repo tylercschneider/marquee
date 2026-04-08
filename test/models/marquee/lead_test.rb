@@ -58,5 +58,10 @@ module Marquee
       lead = Marquee::Lead.create!(email: "test@example.com", source_page: @page)
       assert_equal @page, lead.source_page
     end
+
+    test "defaults bot to false" do
+      lead = Marquee::Lead.new(email: "test@example.com", source_page: @page)
+      assert_equal false, lead.bot
+    end
   end
 end
