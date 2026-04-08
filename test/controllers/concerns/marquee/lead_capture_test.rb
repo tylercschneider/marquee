@@ -71,6 +71,26 @@ module Marquee
       assert lead.converted_variant_id.present?
     end
 
+    test "capture_marquee_lead flags lead as bot when honeypot field is filled" do
+      post "/lead-capture-test", params: {
+        lead: { email: "bot@example.com", source_page_id: @page.id },
+        company_url: "http://spam.com"
+      }
+
+      lead = Marquee::Lead.last
+      assert_equal true, lead.bot
+    end
+
+    test "capture_marquee_lead does not flag lead as bot when honeypot is blank" do
+      post "/lead-capture-test", params: {
+        lead: { email: "human@example.com", source_page_id: @page.id },
+        company_url: ""
+      }
+
+      lead = Marquee::Lead.last
+      assert_equal false, lead.bot
+    end
+
     test "capture_marquee_lead returns unpersisted lead on validation failure" do
       assert_no_difference "Marquee::Lead.count" do
         post "/lead-capture-test", params: {

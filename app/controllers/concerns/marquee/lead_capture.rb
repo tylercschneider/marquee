@@ -9,6 +9,7 @@ module Marquee
     def capture_marquee_lead(params)
       lead = Marquee::Lead.new(params)
       lead.visitor_token = visitor_token
+      lead.bot = honeypot_filled?
       record_conversion(lead)
 
       if lead.save
@@ -17,6 +18,10 @@ module Marquee
       end
 
       lead
+    end
+
+    def honeypot_filled?
+      self.params[:company_url].present?
     end
 
     def record_conversion(lead)
