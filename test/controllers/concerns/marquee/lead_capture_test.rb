@@ -91,6 +91,22 @@ module Marquee
       assert_equal false, lead.bot
     end
 
+    test "capture_marquee_lead skips on_lead_created callback for bot leads" do
+      callback_leads = []
+      original = Marquee.configuration.on_lead_created
+      Marquee.configuration.on_lead_created = ->(lead) { callback_leads << lead }
+
+      post "/lead-capture-test", params: {
+        lead: { email: "bot@example.com", source_page_id: @page.id },
+        company_url: "http://spam.com"
+      }
+
+      assert Marquee::Lead.last.bot, "Expected lead to be flagged as bot"
+      assert_empty callback_leads, "Expected on_lead_created NOT to fire for bot"
+    ensure
+      Marquee.configuration.on_lead_created = original
+    end
+
     test "capture_marquee_lead returns unpersisted lead on validation failure" do
       assert_no_difference "Marquee::Lead.count" do
         post "/lead-capture-test", params: {
