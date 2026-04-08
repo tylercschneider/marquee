@@ -22,6 +22,15 @@ module Marquee
         assert_match "bob@example.com", response.body
       end
 
+      test "GET /admin/leads shows bot badge for bot leads" do
+        Marquee::Lead.create!(email: "bot@example.com", source_page: @page, visitor_token: "v1", bot: true)
+        Marquee::Lead.create!(email: "human@example.com", source_page: @page, visitor_token: "v2", bot: false)
+
+        get "/admin/marquee/leads"
+        assert_response :success
+        assert_match "badge-bot", response.body
+      end
+
       test "GET /admin/leads shows status and source page" do
         Marquee::Lead.create!(email: "alice@example.com", source_page: @page, visitor_token: "v1")
 

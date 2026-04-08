@@ -16,7 +16,12 @@
         <td><%= lead.email %></td>
         <td><%= lead.name || "—" %></td>
         <td><%= lead.source_page.title %></td>
-        <td><span class="badge badge-<%= lead.status %>"><%= lead.status %></span></td>
+        <td>
+          <span class="badge badge-<%= lead.status %>"><%= lead.status %></span>
+          <% if lead.bot? %>
+            <span class="badge badge-bot">bot</span>
+          <% end %>
+        </td>
         <td><%= lead.created_at.strftime("%b %d, %Y %H:%M") %></td>
       </tr>
     <% end %>
