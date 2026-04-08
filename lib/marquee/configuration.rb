@@ -4,7 +4,8 @@ module Marquee
                   :admin_auth, :current_user_method,
                   :admin_path, :public_path,
                   :enable_tracking, :event_adapter,
-                  :on_lead_created
+                  :on_lead_created,
+                  :on_bot_detected
 
     def initialize
       @site_name = "My Site"

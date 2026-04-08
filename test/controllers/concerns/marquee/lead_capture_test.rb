@@ -107,6 +107,22 @@ module Marquee
       Marquee.configuration.on_lead_created = original
     end
 
+    test "capture_marquee_lead fires on_bot_detected callback for bot leads" do
+      detected_leads = []
+      original = Marquee.configuration.on_bot_detected
+      Marquee.configuration.on_bot_detected = ->(lead) { detected_leads << lead }
+
+      post "/lead-capture-test", params: {
+        lead: { email: "bot@example.com", source_page_id: @page.id },
+        company_url: "http://spam.com"
+      }
+
+      assert_equal 1, detected_leads.size
+      assert_equal "bot@example.com", detected_leads.first.email
+    ensure
+      Marquee.configuration.on_bot_detected = original
+    end
+
     test "capture_marquee_lead returns unpersisted lead on validation failure" do
       assert_no_difference "Marquee::Lead.count" do
         post "/lead-capture-test", params: {
