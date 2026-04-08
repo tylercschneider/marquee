@@ -116,6 +116,17 @@ module Marquee
       assert_nil lead.converted_variant_id
     end
 
+    test "POST /leads flags lead as bot when honeypot is filled" do
+      post "/leads", params: {
+        lead: { email: "bot@example.com", source_page_id: @page.id },
+        company_url: "http://spam.com"
+      }
+
+      lead = Marquee::Lead.last
+      assert lead.bot, "Expected lead to be flagged as bot"
+      assert_redirected_to "/lead-page"
+    end
+
     test "POST /leads calls on_lead_created callback when configured" do
       callback_leads = []
       original = Marquee.configuration.on_lead_created
