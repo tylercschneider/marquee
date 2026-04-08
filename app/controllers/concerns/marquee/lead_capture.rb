@@ -14,7 +14,11 @@ module Marquee
 
       if lead.save
         Marquee.instrument("lead.created", email: lead.email, page_id: lead.source_page_id)
-        Marquee.configuration.on_lead_created&.call(lead) unless lead.bot?
+        if lead.bot?
+          Marquee.configuration.on_bot_detected&.call(lead)
+        else
+          Marquee.configuration.on_lead_created&.call(lead)
+        end
       end
 
       lead
