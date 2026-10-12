@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    marquee (0.1.0)
+    marquee (0.1.1)
       rails (>= 7.1)
 
 GEM

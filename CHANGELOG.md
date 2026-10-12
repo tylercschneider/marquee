@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] - 2026-10-12
+
+### Fixed
+
+- Other engines mounted in the host build their links from their own routes again, because only marquee's own controllers reach the host's route helpers.
+
 ## [0.1.0] - 2026-03-05
 
 ### Added
