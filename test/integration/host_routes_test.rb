@@ -22,4 +22,10 @@ class HostRoutesTest < ActionDispatch::IntegrationTest
     assert_includes response.body, 'href="/admin/marquee/leads"'
     assert_includes response.body, 'href="/admin/marquee/pages"'
   end
+
+  test "a page's template links to a route only the host has" do
+    get "/host-route-test"
+
+    assert_select "#host-link[href=?]", "/tracking-test"
+  end
 end
